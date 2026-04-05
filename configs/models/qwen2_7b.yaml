@@ -1,0 +1,15 @@
+model:
+  name: "qwen2.5-7b"
+  hf_model_id: "Qwen/Qwen2.5-7B"
+  num_layers: 28
+  hidden_size: 3584
+  num_attention_heads: 28
+  dtype: "bfloat16"
+  target_weight_matrices:
+    - "self_attn.q_proj"
+    - "self_attn.k_proj"
+    - "self_attn.v_proj"
+    - "self_attn.o_proj"
+    - "mlp.gate_proj"
+    - "mlp.up_proj"
+    - "mlp.down_proj"

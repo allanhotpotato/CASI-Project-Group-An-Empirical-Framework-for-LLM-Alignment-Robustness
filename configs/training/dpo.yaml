@@ -1,0 +1,25 @@
+training:
+  method: "dpo"
+  # DPO hyperparameters
+  beta: 0.1                    # KL penalty coefficient
+  learning_rate: 5.0e-7
+  num_epochs: 1
+  per_device_batch_size: 2
+  gradient_accumulation_steps: 8
+  warmup_ratio: 0.1
+  max_length: 1024
+  max_prompt_length: 512
+  weight_decay: 0.0
+  lr_scheduler_type: "cosine"
+  # Dataset
+  dataset: "Anthropic/hh-rlhf"
+  dataset_split: "train"
+  max_train_samples: null       # null = use all
+  # Checkpointing
+  save_strategy: "steps"
+  save_steps: 500
+  save_total_limit: 10
+  save_delta_theta: true        # Save cumulative weight update at each checkpoint
+  # Logging
+  logging_steps: 10
+  report_to: "wandb"

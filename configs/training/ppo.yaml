@@ -1,0 +1,25 @@
+training:
+  method: "ppo"
+  # PPO hyperparameters
+  learning_rate: 1.0e-6
+  num_epochs: 1
+  per_device_batch_size: 4
+  gradient_accumulation_steps: 4
+  ppo_epochs: 4                 # Inner PPO optimization epochs per batch
+  kl_penalty: "kl"
+  init_kl_coef: 0.2
+  max_length: 1024
+  # Reward model
+  reward_model: "OpenAssistant/reward-model-deberta-v3-large-v2"
+  # Dataset
+  dataset: "Anthropic/hh-rlhf"
+  dataset_split: "train"
+  max_train_samples: null
+  # Checkpointing
+  save_strategy: "steps"
+  save_steps: 500
+  save_total_limit: 10
+  save_delta_theta: true
+  # Logging
+  logging_steps: 10
+  report_to: "wandb"

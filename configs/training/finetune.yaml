@@ -1,0 +1,23 @@
+training:
+  method: "sft"
+  # Standard fine-tuning hyperparameters
+  learning_rate: 2.0e-5
+  num_epochs: 3
+  per_device_batch_size: 4
+  gradient_accumulation_steps: 4
+  warmup_ratio: 0.03
+  max_length: 1024
+  weight_decay: 0.0
+  lr_scheduler_type: "cosine"
+  # Dataset (benign instruction-tuning data)
+  dataset: "tatsu-lab/alpaca"
+  dataset_split: "train"
+  max_train_samples: null
+  # Checkpointing — more frequent to track safety degradation over time
+  save_strategy: "steps"
+  save_steps: 200
+  save_total_limit: 20
+  save_delta_theta: true
+  # Logging
+  logging_steps: 10
+  report_to: "wandb"

@@ -1,0 +1,42 @@
+# Stage 1: Reproduce Qi et al. + Validate Adversarial Alignment in LLMs
+# Goal: Confirm safety degrades under fine-tuning, and that Peng et al.'s
+# adversarial alignment mechanism operates in transformer LLMs.
+
+experiment:
+  name: "stage1_adversarial_alignment_validation"
+  model_config: "configs/models/llama3_8b.yaml"
+
+  steps:
+    # Step 1: DPO safety training on base model
+    safety_training:
+      training_config: "configs/training/dpo.yaml"
+      output_dir: "outputs/stage1/dpo_aligned"
+
+    # Step 2: Evaluate safety post-alignment
+    safety_eval_pre_finetune:
+      benchmarks: ["harmbench", "truthfulqa"]
+
+    # Step 3: Compute top-k Hessian eigenvectors of DPO safety loss
+    hessian:
+      loss_type: "dpo"
+      top_k: 20
+      lanczos_iterations: 100
+      hessian_batch_size: 128
+      # Compute on subset of layers to save compute
+      layer_indices: [0, 4, 8, 12, 16, 20, 24, 28, 31]
+      output_dir: "outputs/stage1/hessian"
+
+    # Step 4: Fine-tune aligned model on benign Alpaca data
+    finetune:
+      training_config: "configs/training/finetune.yaml"
+      output_dir: "outputs/stage1/alpaca_finetuned"
+
+    # Step 5: Evaluate safety post-fine-tuning
+    safety_eval_post_finetune:
+      benchmarks: ["harmbench", "truthfulqa"]
+
+    # Step 6: Compute adversarial alignment scores at each checkpoint
+    adversarial_alignment:
+      # Cosine similarity between delta_theta and top Hessian eigenvectors
+      random_baseline_samples: 100  # Number of random vectors for baseline comparison
+      output_dir: "outputs/stage1/adversarial_alignment"

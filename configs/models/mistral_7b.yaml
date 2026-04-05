@@ -1,0 +1,15 @@
+model:
+  name: "mistral-7b"
+  hf_model_id: "mistralai/Mistral-7B-v0.3"
+  num_layers: 32
+  hidden_size: 4096
+  num_attention_heads: 32
+  dtype: "bfloat16"
+  target_weight_matrices:
+    - "self_attn.q_proj"
+    - "self_attn.k_proj"
+    - "self_attn.v_proj"
+    - "self_attn.o_proj"
+    - "mlp.gate_proj"
+    - "mlp.up_proj"
+    - "mlp.down_proj"
